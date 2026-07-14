@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root { --radius: 0.5rem; }
+
+  body {
+    @apply antialiased bg-background text-on-surface font-body;
+  }
+
+  /* Dark scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #0A192F; }
+  ::-webkit-scrollbar-thumb { background: #2A3A4A; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #44474D; }
+}
+
+@layer components {
+  /* ─── Cards ─── */
+  .card {
+    @apply bg-surface-container-low rounded-lg border border-outline-variant;
+  }
+  .card-hover {
+    @apply bg-surface-container-low rounded-lg border border-outline-variant
+           hover:border-outline transition-all duration-200 cursor-pointer;
+  }
+
+  /* ─── Buttons ─── */
+  .btn-primary {
+    @apply bg-secondary hover:bg-secondary-hover text-white
+           text-label-lg px-4 py-2 rounded-md
+           transition-all duration-200
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+  .btn-secondary {
+    @apply border border-tertiary text-tertiary hover:bg-tertiary-container
+           text-label-lg px-4 py-2 rounded-md
+           transition-all duration-200
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+  .btn-danger {
+    @apply bg-error hover:opacity-80 text-white
+           text-label-lg px-4 py-2 rounded-md
+           transition-all duration-200
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  /* ─── Inputs ─── */
+  .input {
+    @apply w-full bg-background border border-outline-variant rounded-md
+           px-3 py-2 text-body-md text-on-surface placeholder:text-on-surface-dim
+           focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/30
+           transition-colors duration-200;
+  }
+
+  /* ─── Labels ─── */
+  .label {
+    @apply block text-label-md uppercase tracking-wider text-on-surface-variant mb-1;
+  }
+
+  /* ─── Badges ─── */
+  .badge-fraud {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full
+           text-label-sm bg-surface-error text-error border border-error/20;
+  }
+  .badge-safe {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full
+           text-label-sm bg-surface-success text-success border border-success/20;
+  }
+  .badge-warn {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full
+           text-label-sm bg-surface-warning text-warning border border-warning/20;
+  }
+
+  /* ─── Table ─── */
+  .table-header {
+    @apply bg-surface-container text-label-sm text-on-surface-variant
+           text-left text-xs uppercase tracking-wider;
+  }
+  .table-row {
+    @apply border-b border-outline-variant hover:bg-surface-container transition-colors;
+  }
+  .table-cell {
+    @apply px-4 py-3 text-body-md text-on-surface;
+  }
+
+  /* ─── Section dividers ─── */
+  .divider {
+    @apply border-t border-outline-variant;
+  }
+
+  /* ─── KPI metric bar track ─── */
+  .metric-bar-track {
+    @apply h-1.5 bg-surface-container rounded-full overflow-hidden;
+  }
+  .metric-bar-fill {
+    @apply h-full rounded-full transition-all duration-700;
+  }
+}

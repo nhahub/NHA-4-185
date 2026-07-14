@@ -1,0 +1,21 @@
+# docker-compose.override.yml
+# Applied automatically in development — overrides base compose for hot-reload
+version: "3.9"
+
+services:
+  backend:
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - ./backend:/app
+
+  frontend:
+    command: npm run dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      NEXT_TELEMETRY_DISABLED: "1"
+
+  celery_worker:
+    command: celery -A app.core.celery_app worker --loglevel=debug --concurrency=2

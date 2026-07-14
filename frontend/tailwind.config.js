@@ -1,0 +1,88 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        background:     "#051424",
+        surface: {
+          DEFAULT:      "#0A192F",
+          "container-low":   "#122131",
+          "container":       "#1C2B3C",
+          "container-high":  "#273647",
+          "container-lowest":"#030F1C",
+          error:  "#4C1A1A",
+          success:"#0D2916",
+          warning:"#3D2E0A",
+        },
+        on: {
+          surface:           "#D4E4FA",
+          "surface-variant": "#8B9BB4",
+          "surface-dim":     "#6E7F98",
+          "container-low":   "#0F1D2E",
+          "container":       "#1A2838",
+          "container-high":  "#243242",
+          "container-error": "#FFB4AB",
+          "container-success":"#86EFAC",
+          "container-warning":"#FCD34D",
+          "secondary-container":"#1E3A5F",
+        },
+        primary: {
+          DEFAULT:      "#B9C7E4",
+          "container":  "#1E3A5F",
+          hover:        "#2A4F7A",
+        },
+        secondary: {
+          DEFAULT:      "#0266FF",
+          hover:        "#1A78FF",
+          "container":  "#1E3A5F",
+        },
+        tertiary: {
+          DEFAULT:      "#00DBE7",
+          hover:        "#33E4ED",
+          "container":  "#0A2A2C",
+          dim:          "#008D96",
+        },
+        error:   { DEFAULT: "#FFB4AB", "container": "#4C1A1A" },
+        success: { DEFAULT: "#86EFAC", "container": "#0D2916" },
+        warning: { DEFAULT: "#FCD34D", "container": "#3D2E0A" },
+        outline: {
+          DEFAULT:      "#44474D",
+          variant:      "#2A3A4A",
+          "variant-dim":"#1E293B",
+        },
+      },
+      fontFamily: {
+        sans:  ["var(--font-manrope)", "system-ui", "sans-serif"],
+        body:  ["var(--font-inter)", "system-ui", "sans-serif"],
+        mono:  ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
+        brand: ["var(--font-manrope)", "system-ui", "sans-serif"],
+        headline: ["var(--font-manrope)", "system-ui", "sans-serif"],
+      },
+      fontSize: {
+        "headline-xl": ["3rem",     { lineHeight: "1.15", fontWeight: "800" }],
+        "headline-lg": ["2rem",     { lineHeight: "1.2",  fontWeight: "700" }],
+        "headline-md": ["1.5rem",   { lineHeight: "1.25", fontWeight: "700" }],
+        "headline-sm": ["1.25rem",  { lineHeight: "1.3",  fontWeight: "600" }],
+        "body-lg":     ["1rem",     { lineHeight: "1.6",  fontWeight: "400" }],
+        "body-md":     ["0.875rem", { lineHeight: "1.5",  fontWeight: "400" }],
+        "body-sm":     ["0.75rem",  { lineHeight: "1.4",  fontWeight: "400" }],
+        "label-caps":   ["0.875rem", { lineHeight: "1.4",  fontWeight: "600", letterSpacing: "0.05em" }],
+        "label-lg":    ["0.875rem", { lineHeight: "1.4",  fontWeight: "600" }],
+        "label-md":    ["0.75rem",  { lineHeight: "1.3",  fontWeight: "600" }],
+        "label-sm":    ["0.6875rem",{ lineHeight: "1.3",  fontWeight: "600" }],
+      },
+      borderRadius: {
+        "xs":  "2px",
+        "sm":  "4px",
+        "md":  "6px",
+        "lg":  "12px",
+        "xl":  "16px",
+      },
+    },
+  },
+  plugins: [],
+};

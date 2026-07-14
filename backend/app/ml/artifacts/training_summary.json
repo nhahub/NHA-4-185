@@ -1,0 +1,51 @@
+{
+  "results": {
+    "logistic_regression": {
+      "algorithm": "logistic_regression",
+      "threshold": 0.945,
+      "precision": 0.3462,
+      "recall": 0.84,
+      "f1": 0.4903,
+      "auc_roc": 0.9779,
+      "pr_auc": 0.7673,
+      "mcc": 0.5384,
+      "confusion_matrix": {
+        "tn": 56768,
+        "fp": 119,
+        "fn": 12,
+        "tp": 63
+      }
+    },
+    "xgboost": {
+      "algorithm": "xgboost",
+      "threshold": 0.945,
+      "precision": 0.8235,
+      "recall": 0.7467,
+      "f1": 0.7832,
+      "auc_roc": 0.9523,
+      "pr_auc": 0.7731,
+      "mcc": 0.7839,
+      "confusion_matrix": {
+        "tn": 56875,
+        "fp": 12,
+        "fn": 19,
+        "tp": 56
+      }
+    },
+    "isolation_forest": {
+      "algorithm": "isolation_forest",
+      "auc_roc": 0.955,
+      "pr_auc": 0.0363,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "confusion_matrix": {
+        "tn": 56827,
+        "fp": 60,
+        "fn": 75,
+        "tp": 0
+      }
+    }
+  },
+  "timestamp": "2026-07-13T17:38:42.522260"
+}

@@ -1,0 +1,153 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: fraud_postgres_prod
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    deploy:
+      resources:
+        limits: {cpus: "1.0", memory: 1G}
+    logging:
+      driver: json-file
+      options: {max-size: "50m", max-file: "5"}
+
+  redis:
+    image: redis:7-alpine
+    container_name: fraud_redis_prod
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD","redis-cli","ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    deploy:
+      resources:
+        limits: {cpus: "0.5", memory: 384M}
+    logging:
+      driver: json-file
+      options: {max-size: "20m", max-file: "3"}
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    container_name: fraud_backend_prod
+    env_file: .env.prod
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/2
+    volumes:
+      - ml_artifacts:/app/app/ml/artifacts
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis:    {condition: service_healthy}
+    healthcheck:
+      test: ["CMD","curl","-f","http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: always
+    deploy:
+      resources:
+        limits: {cpus: "2.0", memory: 2G}
+    logging:
+      driver: json-file
+      options: {max-size: "100m", max-file: "5"}
+
+  celery_worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    container_name: fraud_celery_prod
+    command: celery -A app.core.celery_app worker --loglevel=warning --concurrency=2
+    env_file: .env.prod
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/2
+    volumes:
+      - ml_artifacts:/app/app/ml/artifacts
+    depends_on:
+      backend: {condition: service_healthy}
+    restart: always
+    deploy:
+      resources:
+        limits: {cpus: "1.0", memory: 1G}
+    logging:
+      driver: json-file
+      options: {max-size: "50m", max-file: "3"}
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    container_name: fraud_frontend_prod
+    environment:
+      NEXT_PUBLIC_API_URL: https://your-domain.com/api/v1
+      NEXT_PUBLIC_APP_NAME: FraudShield
+    depends_on:
+      - backend
+    restart: always
+    deploy:
+      resources:
+        limits: {cpus: "1.0", memory: 512M}
+    logging:
+      driver: json-file
+      options: {max-size: "50m", max-file: "3"}
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: fraud_nginx_prod
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+      - certbot_www:/var/www/certbot:ro
+      - certbot_conf:/etc/letsencrypt:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+      - frontend
+    restart: always
+    deploy:
+      resources:
+        limits: {cpus: "0.5", memory: 128M}
+    logging:
+      driver: json-file
+      options: {max-size: "50m", max-file: "5"}
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: fraud_certbot
+    volumes:
+      - certbot_www:/var/www/certbot
+      - certbot_conf:/etc/letsencrypt
+    entrypoint: /bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $${!}; done'
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  ml_artifacts:
+  certbot_www:
+  certbot_conf:

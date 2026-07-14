@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+*.egg-info/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# ML artifacts (large binary files)
+*.pkl
+*.joblib
+ml/data/creditcard.csv
+backend/ml/data/creditcard.csv
+ml/models/*.pkl
+backend/ml/models/*.pkl
+test_batch.csv
+
+# ML reports (generated images)
+ml/reports/*.png
+backend/ml/reports/*.png
+
+# Node
+node_modules/
+.next/
+frontend/.env.local
+frontend/.env
+
+# Docker
+.dockerignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

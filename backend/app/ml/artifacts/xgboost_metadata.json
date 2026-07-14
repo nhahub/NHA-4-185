@@ -1,0 +1,17 @@
+{
+  "algorithm": "xgboost",
+  "threshold": 0.945,
+  "precision": 0.8235,
+  "recall": 0.7467,
+  "f1": 0.7832,
+  "auc_roc": 0.9523,
+  "pr_auc": 0.7731,
+  "mcc": 0.7839,
+  "confusion_matrix": {
+    "tn": 56875,
+    "fp": 12,
+    "fn": 19,
+    "tp": 56
+  },
+  "hyperparams": {}
+}

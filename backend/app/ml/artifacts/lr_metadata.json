@@ -1,0 +1,16 @@
+{
+  "algorithm": "logistic_regression",
+  "threshold": 0.945,
+  "precision": 0.3481,
+  "recall": 0.84,
+  "f1": 0.4922,
+  "auc_roc": 0.9782,
+  "pr_auc": 0.7675,
+  "mcc": 0.5399,
+  "confusion_matrix": {
+    "tn": 56769,
+    "fp": 118,
+    "fn": 12,
+    "tp": 63
+  }
+}
